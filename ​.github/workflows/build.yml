@@ -20,15 +20,24 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      # FIX: Forcing Gradle 8.4 to match Android Plugin 8.1.1
-      - name: Generate Compatible Gradle Wrapper
-        run: gradle wrapper --gradle-version 8.4
+      # Yeh step directly exact aur safe Gradle version generate karega
+      - name: Create Gradle Wrapper Config
+        run: |
+          mkdir -p gradle/wrapper
+          cat <<EOF > gradle/wrapper/gradle-wrapper.properties
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-bin.zip
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          EOF
 
       - name: Make Gradlew Executable
         run: chmod +x gradlew
 
       - name: Build APK
-        run: ./gradlew assembleDebug
+        # Added --stacktrace taaki next time error chup na jaye
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
