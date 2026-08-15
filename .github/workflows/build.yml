@@ -20,6 +20,10 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+      # YEH NAYA STEP HAI JO MISSING FILES GENERATE KAREGA
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper
+
       - name: Make Gradlew Executable
         run: chmod +x gradlew
 
